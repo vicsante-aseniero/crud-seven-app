@@ -3,9 +3,11 @@
 {
 	"name": "Node.js & TypeScript",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
-
-	// Features to add to the dev container. More info: https://containers.dev/features.
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "node-app",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+ 
+ 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
 		"ghcr.io/devcontainers/features/node:1": {
 			"nodeGypDependencies": true,
@@ -34,7 +36,8 @@
 		"ghcr.io/devcontainers-extra/features/zsh-plugins:0": {
 			"plugins": "ssh-agent npm",
 			"omzPlugins": "https://github.com/zsh-users/zsh-autosuggestions",
-			"username": "root"
+			"version": "latest",
+			"username": "node"
 		}
 	},
 
@@ -42,11 +45,12 @@
 	"forwardPorts": [5000, 5001],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "yarn install",
+	"postCreateCommand": "bash .devcontainer/postCreateCommand.sh",
 
 	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
+			"settings": {},
 			"extensions": [
                 "antfu.vite",
                 "vitest.explorer",
@@ -85,8 +89,8 @@
 				"xabikos.JavaScriptSnippets"
 			]
 		}
-	}
+	},
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+	"remoteUser": "node"
 }

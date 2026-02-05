@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  node-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: crud-seven-app
+
+    volumes:
+      - ../..:/workspaces:cached
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
+    networks: 
+      - keycloak-dbs-brokers_backend_network
+
+    ports:
+      - "5000:5000" # For API. Overrides default command so things don't shut down after the process ends.
+      - "5001:5001" # For UI. Overrides default command so things don't shut down after the process ends.
+
+    # Resource limits for 16GB RAM / Intel i7-1355U workstation
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+          cpus: '2'
+        reservations:
+          memory: 2G
+          cpus: '1'
+
+    # Using non-root user for security best practices
+    user: node
+
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
